@@ -8,9 +8,8 @@ library(TSstudio)
 library(highcharter)
 
 
-
-library(readr)
-data <- read_csv("Documentos/Proyecto series de tiempo/161030.csv")
+Archivo = "https://github.com/LordOnion88/MAD/blob/main/Series%20de%20Tiempo/161030.csv"
+data <- read_csv(Archivo,)
 View(data)
 
 
