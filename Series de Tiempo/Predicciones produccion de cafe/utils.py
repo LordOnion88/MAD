@@ -9,6 +9,7 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing   
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from statsmodels.tsa.stattools import adfuller
+from sklearn.metrics import mean_absolute_error,mean_squared_error,root_mean_squared_error, mean_absolute_percentage_error
 
 #Obtener Datos
 import yfinance as yf
