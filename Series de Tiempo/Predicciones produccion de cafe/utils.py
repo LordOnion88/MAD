@@ -8,6 +8,7 @@ import statsmodels.api as sm
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing   
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+from statsmodels.tsa.stattools import adfuller
 
 #Obtener Datos
 import yfinance as yf
@@ -109,4 +110,70 @@ def serie_de_tiempo(Dataset,Cantidades):
     plt.title(f'Serie de tiempor de {Cantidades} del {fecha_min} al {fecha_max}')
     plt.xlabel('Fecha')  
     plt.ylabel(Cantidades)
+    plt.show()
+
+def plot_time_series_analysis(df, column, diff_lag=12, acf_lags=40):
+    """
+    Función para graficar la serie original, diferenciada y diferenciada estacionalmente, 
+    junto con sus ACF y PACF.
+
+    Parámetros:
+    - df: DataFrame que contiene la serie de tiempo.
+    - column: Columna del DataFrame que se va a analizar.
+    - diff_lag: Lag para la diferenciación estacional (por defecto es 12).
+    - acf_lags: Número de rezagos para calcular ACF y PACF (por defecto es 40).
+    """
+
+    # Diferenciación de la serie
+    differenced_series = df[column].diff().dropna()
+    seasonal_differenced_series = df[column].diff(diff_lag).dropna()
+
+    plt.figure(figsize=(20, 12))
+
+    # Serie original
+    plt.subplot(3, 3, 1)
+    df[column].plot(ax=plt.gca())
+    plt.title('Serie Original')
+
+    # ACF de la serie original
+    plt.subplot(3, 3, 2)
+    plot_acf(df[column], lags=acf_lags, ax=plt.gca())
+    plt.title('ACF - Serie Original')
+
+    # PACF de la serie original
+    plt.subplot(3, 3, 3)
+    plot_pacf(df[column], lags=acf_lags, ax=plt.gca())
+    plt.title('PACF - Serie Original')
+
+    # Serie diferenciada
+    plt.subplot(3, 3, 4)
+    differenced_series.plot(ax=plt.gca())
+    plt.title('Serie Diferenciada')
+
+    # ACF de la serie diferenciada
+    plt.subplot(3, 3, 5)
+    plot_acf(differenced_series, lags=acf_lags, ax=plt.gca())
+    plt.title('ACF - Serie Diferenciada')
+
+    # PACF de la serie diferenciada
+    plt.subplot(3, 3, 6)
+    plot_pacf(differenced_series, lags=acf_lags, ax=plt.gca())
+    plt.title('PACF - Serie Diferenciada')
+
+    # Serie diferenciada estacionalmente
+    plt.subplot(3, 3, 7)
+    seasonal_differenced_series.plot(ax=plt.gca())
+    plt.title('Serie Diferenciada Estacionalmente')
+
+    # ACF de la serie diferenciada estacionalmente
+    plt.subplot(3, 3, 8)
+    plot_acf(seasonal_differenced_series, lags=acf_lags, ax=plt.gca())
+    plt.title('ACF - Serie Diferenciada Estacionalmente')
+
+    # PACF de la serie diferenciada estacionalmente
+    plt.subplot(3, 3, 9)
+    plot_pacf(seasonal_differenced_series, lags=acf_lags, ax=plt.gca())
+    plt.title('PACF - Serie Diferenciada Estacionalmente')
+
+    plt.tight_layout()
     plt.show()
