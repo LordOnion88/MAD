@@ -1,0 +1,77 @@
+---
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+# Regresión Pronósticos 
+
+
+
+
+```{r}
+library("readxl")
+library("psych")
+library('lmtest')
+library(zoo)
+library(corrplot)
+library(dplyr)
+library(car)
+
+```
+
+```{r}
+getwd()
+```
+
+```{r}
+library("readxl")
+Europa = read_excel("europe.xlsx")
+str(Europa)
+```
+
+```{r}
+summary(Europa)
+```
+
+```{r}
+describe(Europa)
+```
+Grafica de disperción por cada una de las variables
+
+```{r}
+scatterplotMatrix(Europanum,smooth = T,legend = T, diagonal = F)
+```
+
+
+
+```{r}
+Europanum = Europa %>% select(where(is.numeric))
+matrizcorr = cor(Europanum)
+corrplot(matrizcorr, method = "color", type = "upper", tl.col = "black", tl.srt = 45, title = "Matriz de Correlación", tl.cex = 0.5, addCoef.col = T)
+```
+
+Se tiene como variable dependiente a `Sales/Capita`, con esta parte clara y validando la correlación de las variables independientes se observa una correlación de 0.81 la cual es fuerte entre `Pop (millones)` y `Computer_Sales`, por esta razón no se tendran en cuenta para los modelos.
+
+## Modelado
+
+Se crean dos modelos, uno con todas las variables (**Modelo 1**) y otro descartando la variable \`\`
+
+```{r}
+modelo1 = lm(`Sales/Capita`~ `Pop (millions)`+Computer_Sales+GNP_per_head + Unemployment_rate + `%age_spend_on education`,data = Europa)
+summary(modelo1)
+```
+
+```{r}
+confint(modelo1, level = 0.95)
+```
+
+```{r}
+modelo2 = lm(`Sales/Capita` ~ GNP_per_head + Unemployment_rate + `%age_spend_on education`   ,data = Europa)
+
+summary(modelo2)
+```
+
+```{r}
+confint(modelo2, level = 0.95)
+```
