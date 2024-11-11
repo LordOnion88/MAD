@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import plotly.express as px
+from statsmodels.graphics.mosaicplot import mosaic
+
+sns.set_theme(style="darkgrid",palette="Set2")
 
 
 def Graficar_categoricas (variable, df):
