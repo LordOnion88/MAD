@@ -1,6 +1,7 @@
 # utils.py
 
 import warnings
+warnings.filterwarnings('ignore')
 
 #Procesamiento de datos
 
@@ -16,6 +17,9 @@ from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from skforecast.Sarimax import Sarimax
 import pmdarima as pm
+from statsmodels.tsa.stattools import acf, q_stat
+from statsmodels.stats.diagnostic import acorr_ljungbox
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 #Obtener Datos
 import yfinance as yf
